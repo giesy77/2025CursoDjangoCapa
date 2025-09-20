@@ -1,0 +1,13 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Página de Bienvenida{% endblock %}
+
+{% block content %}
+    <p class="welcome-text">¡Hola! Esta es la página principal del sitio para el Curso de Django. Desde aquí, puedes acceder a las encuestas, mapa y al administrador de preguntas para la encuesta.</p>
+
+    <div class="main-buttons-container">
+        <a href="{% url 'polls:indice' %}" class="home-button" id="polls-btn">Encuestas</a>
+        <a href="{% url 'map:mapa' %}" class="home-button" id="map-btn">Mapa</a>
+        <!--<a href="{% url 'gestion:gestion' %}" class="home-button" id="admin-btn">Admin Cuestionario</a>-->
+    </div>
+{% endblock %}

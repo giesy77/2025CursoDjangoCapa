@@ -1,0 +1,51 @@
+{% extends 'home/base.html' %}
+{% block title %}{{ form_title }}{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2 class="form-title">{{ form_title }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <fieldset class="form-fieldset">
+            <legend>Pregunta</legend>
+            <div class="form-fields-wrapper">
+                {{ question_form.as_p }}
+            </div>
+        </fieldset>
+
+        <fieldset class="form-fieldset">
+            <legend>Opciones</legend>
+            {{ formset.management_form }}
+            <div id="formset-container">
+                {% for form in formset %}
+
+                    <div class="choice-item">
+                        {{ form.as_p }}
+                        {% if form.instance.pk %}
+                            <label for="{{ form.DELETE.id_for_label }}">Eliminar:</label>
+                            {{ form.DELETE }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </fieldset>
+
+
+        <div class="link-container">
+            <button type="submit" class="submit-button">Guardar</button>
+
+            {% if not is_new %}
+                <a href="{% url 'polls:elimina_pregunta' question.pk %}" class="action-link delete-link">Eliminar Pregunta</a>
+            <!--<form action="{% url 'polls:elimina_pregunta' question.pk %}" method="post" class="delete-form">
+                {% csrf_token %}
+                <button type="submit" class="delete-button">Eliminar Pregunta</button>
+            </form>-->
+            {% endif %}
+
+            <a href="{% url 'polls:gestion' %}" class="vote-again-link">Regresar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

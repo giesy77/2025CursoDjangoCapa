@@ -1,0 +1,18 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Confirmar Eliminación{% endblock %}
+
+{% block content %}
+    <div class="delete-container">
+        <h2 class="delete-title">¿Estás seguro que deseas eliminar esta pregunta?</h2>
+        <p class="delete-text">La pregunta **"{{ question.question_text }}"** y todas sus opciones serán eliminadas permanentemente. Esta acción no se puede deshacer.</p>
+        
+        <div class="button-group">
+            <form action="{% url 'polls:elimina_pregunta' question.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="confirm-delete-button">Sí, eliminar</button>
+            </form>
+            <a href="{% url 'polls:gestion'%}" class="cancel-button">Cancelar</a>
+        </div>
+    </div>
+{% endblock %}

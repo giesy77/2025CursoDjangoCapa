@@ -1,0 +1,35 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Página de Bienvenida{% endblock %}
+
+{% block content %}
+
+<div class="poll-detail-container">
+    <form action="{% url 'polls:voto' question.id %}" method="post">
+        {% csrf_token %}
+        <fieldset class="poll-fieldset">
+            <legend>
+                <h1 class="question-text">{{ question.question_text }}</h1>
+            </legend>
+
+            {% if error_message %}
+                <p class="error-message"><strong>{{ error_message }}</strong></p>
+            {% endif %}
+
+            <div class="choices-list">
+                {% for choice in question.choice_set.all %}
+                    <div class="choice-item">
+                        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </fieldset>
+
+        <div class="submit-button-container">
+            <input type="submit" value="Votar" class="vote-button">
+        </div>
+    </form>
+</div>
+
+{% endblock %}

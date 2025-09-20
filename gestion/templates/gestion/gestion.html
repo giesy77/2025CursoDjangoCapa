@@ -1,0 +1,14 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Página de Bienvenida{% endblock %}
+
+{% block content %}
+
+    <!-- tu_template.html -->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar Pregunta</button>
+    </form>
+
+{% endblock %}

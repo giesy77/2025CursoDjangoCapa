@@ -1,0 +1,24 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Resultados de Votación{% endblock %}
+
+{% block content %}
+
+<div class="results-container">
+    <h1 class="question-text">{{ question.question_text }}</h1>
+
+    <ul class="results-list">
+        {% for choice in question.choice_set.all %}
+            <li class="result-item">
+                <span class="choice-text">{{ choice.choice_text }}</span>
+                <span class="vote-count">{{ choice.votes }} voto{{ choice.votes|pluralize }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="link-container">
+        <a href="{% url 'polls:detalle' question.id %}" class="vote-again-link">¿Votar de Nuevo?</a>
+    </div>
+</div>
+
+{% endblock %}

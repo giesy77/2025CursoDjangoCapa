@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Curso Django{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+
+    </style>
+
+</head>
+<body>
+
+    <header>
+        <h1>Pagina de Curso de Django</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Inicio</a></li>
+            <li><a href="{% url 'polls:indice' %}">Encuestas</a></li>
+            <li><a href="{% url 'map:mapa' %}">Mapa</a></li>
+            <!--<li><a href="{% url 'gestion:gestion' %}">Admin Preguntas</a></li>-->
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Mi Curso Django. Todos los derechos reservados (R).</p>
+    </footer>
+
+</body>
+</html>

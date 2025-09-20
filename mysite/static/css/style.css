@@ -1,0 +1,666 @@
+
+.welcome-text {
+    text-align: center;
+    font-size: 1.2em;
+    max-width: 800px;
+    margin: 20px auto;
+    line-height: 1.5;
+    color: white;
+}
+
+.main-buttons-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; /* Permite que los botones se envuelvan si la pantalla es pequeña */
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.home-button {
+    display: flex;
+    flex-direction: column; /* Coloca el texto encima de la imagen */
+    align-items: center; /* Centra los elementos horizontalmente */
+    justify-content: center; /* Centra el contenido verticalmente */
+    width: 200px;
+    height: 150px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #333;
+    text-decoration: none;
+    font-size: 1.2em;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.home-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+body {
+    background-image: url('../images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Estilos generales para el cuerpo de la página */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo para el encabezado centrado */
+header {
+    text-align: center;
+    color: white;
+}
+
+/* Estilos para el menú de navegación centrado */
+nav {
+    text-align: center; /* Centra el menú horizontalmente */
+    margin: 20px 0;
+}
+
+nav ul {
+    list-style: none; /* Quita los puntos de la lista */
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+}
+
+nav li {
+    display: inline-block; /* Muestra los elementos en línea */
+    margin: 0 15px;
+   }
+nav li a {
+	color: white;
+}
+
+/* Estilos para el pie de página */
+footer {
+    position: fixed; /* Mantiene el footer en una posición fija */
+    bottom: 10px;
+    right: 10px;
+    text-align: right;
+    font-size: 0.8em; /* Letras pequeñas */
+    color: #888;
+}
+
+
+
+input[type="text"], input[type="email"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Para que el padding no afecte el ancho */
+}
+
+
+
+
+.home-button {
+    /* Mantenemos los estilos existentes */
+    display: flex;
+    flex-direction: column; /* Apila el icono y el texto verticalmente */
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 150px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #333;
+    text-decoration: none;
+    font-size: 1.2em;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.home-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Pseudo-elemento para el icono */
+.home-button::before {
+    content: ""; /* Esto es crucial para que el pseudo-elemento se muestre */
+    display: block;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px; /* Espacio entre el icono y el texto */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Rutas de las imágenes de los iconos */
+#polls-btn::before {
+    background-image: url('../images/icons/encuesta.png');
+}
+
+#map-btn::before {
+    background-image: url("../images/icons/map.png");
+}
+
+#admin-btn::before {
+    background-image: url("../images/icons/admin.png");
+}
+
+
+
+
+.form-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin-top: 8px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.poll-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.poll-item {
+    margin-bottom: 10px;
+}
+
+.poll-item a {
+    display: block;
+    padding: 15px 25px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+
+
+.poll-item a:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+.poll-detail-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.poll-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.question-text {
+    font-size: 1.8em;
+    color: #333;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.error-message {
+    color: #d9534f;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.choices-list {
+    margin-bottom: 20px;
+}
+
+.choice-item {
+    margin-bottom: 15px;
+    background-color: #fff;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    transition: background-color 0.2s ease;
+}
+
+.choice-item:hover {
+    background-color: #f0f0f0;
+}
+
+.choice-item input[type="radio"] {
+    margin-right: 10px;
+}
+
+.submit-button-container {
+    display: flex;
+    justify-content: flex-end; /* Alinea el contenido a la derecha */
+    margin-top: 20px;
+}
+
+.vote-button {
+    padding: 12px 25px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.vote-button:hover {
+    background-color: #218838;
+}
+
+.results-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.results-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.result-item {
+    display: flex; /* Utiliza flexbox para alinear el texto y el conteo */
+    justify-content: space-between; /* Empuja el conteo al final del elemento */
+    align-items: center; /* Centra los elementos verticalmente */
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.choice-text {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #555;
+}
+
+.vote-count {
+    font-size: 1.1em;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.link-container {
+    text-align: center; /* Alinea el enlace a la derecha del contenedor */
+    margin-top: 15px;
+}
+
+.vote-again-link {
+    display: inline-block;
+    padding: 14px 25px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.vote-again-link:hover {
+    background-color: #218838;
+}
+
+
+
+
+
+
+/* Estilos para el encabezado centrado */
+.map-header {
+    text-align: center;
+    font-size: 1.8em;
+    color: white;
+    margin: 20px 0;
+}
+
+/* Estilos para el contenedor del mapa */
+.map-container {
+    width: 100%;
+    height: 70vh; /* Establece la altura del mapa al 80% de la ventana */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden; /* Asegura que las esquinas sean redondeadas */
+    margin: 20px auto;
+}
+
+/* El estilo de #map ya no necesita altura si está en un contenedor con altura fija */
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+
+
+
+
+/* Estilos para el campo del FormSet */
+#formset-container .choice-item {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+#formset-container .choice-item p {
+    margin: 0;
+}
+
+#formset-container .choice-item input[type="text"] {
+    width: calc(100% - 22px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#formset-container .choice-item label {
+    font-weight: normal;
+    color: #333;
+}
+
+
+
+.delete-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fefefe;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.delete-title {
+    font-size: 1.8em;
+    color: #dc3545;
+    margin-bottom: 20px;
+}
+
+.delete-text {
+    font-size: 1.1em;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+.delete-text strong {
+    color: #333;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.confirm-delete-button {
+    padding: 12px 25px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.confirm-delete-button:hover {
+    background-color: #c82333;
+}
+
+.cancel-button {
+    padding: 12px 25px;
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+    background-color: #5a6268;
+}
+
+
+.crud-actions-top {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 25px;
+}
+
+.create-question-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background-color: green;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.create-question-button:hover {
+    background-color: #0056b3;
+}
+
+.question-list {
+    list-style: none;
+    padding: 0;
+}
+
+.question-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.question-link {
+    font-size: 1.1em;
+    color: #333;
+    text-decoration: none;
+    flex-grow: 1;
+    background-color: #007bff;
+}
+
+.crud-actions {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.action-link {
+    padding: 15px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    background-color: green;
+}
+
+.edit-link {
+    background-color: green;
+}
+
+.edit-link:hover {
+    background-color: #e0a800;
+}
+
+.resultados-link {
+    background-color: #786661;
+}
+
+.resultados-link:hover {
+    background-color: #e0a800;
+}
+
+.delete-link {
+    background-color: red;
+}
+
+.delete-link:hover {
+    background-color: #c82333;
+}
+
+
+
+
+/* Estilos para el contenedor del formulario */
+.form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 25px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    text-align: center;
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+/* Estilos para el botón de "Guardar" o "Actualizar" */
+.submit-button {
+    width: 40%;
+    padding: 15px;
+    background-color: #28a745; /* Verde */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #218838;
+}
+
+.regresar-submit {
+    padding: 15px;
+    background-color: #28a745; /* Verde */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.regresar-submit:hover {
+    background-color: #218838;
+}
+
+/* Estilos para el formulario y botón de eliminar */
+.delete-form {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.delete-button {
+    padding: 15px 20px;
+    background-color: #dc3545; /* Rojo */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+}
+
+/* Estilos para la página de confirmación de eliminación */
+.delete-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fefefe;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.confirm-delete-button {
+    padding: 12px 25px;
+    background-color: #dc3545; /* Rojo */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.confirm-delete-button:hover {
+    background-color: #c82333;
+}
+
+.button-icon{
+    width: 24px;
+    height:24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-icon img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}

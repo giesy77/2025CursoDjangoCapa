@@ -1,0 +1,34 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Página de Bienvenida{% endblock %}
+
+{% block content %}
+
+{% load static %}
+<div class="crud-actions-top">
+    <a href="{% url 'polls:gestion' %}" class="create-question-button">
+        <span class="button-icon">
+            <img src="{% static './images/icons/admin.png'%}">
+        </span>
+        Administrar Encuesta
+    </a>
+</div>
+
+<div class="polls-container">
+{% if latest_question_list %}
+    <ul class="poll-list">
+        {% for question in latest_question_list %}
+            <li class="poll-item">
+                <a href="{% url 'polls:detalle' question.id %}" class="question-link">{{ question.question_text }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="no-questions">No hay encuestas disponibles. ¡Crea una nueva ahora!</p>
+{% endif %}
+</div>
+
+{% endblock %}
+
+
+
