@@ -30,8 +30,6 @@ DEBUG = config('DEBUG', default=False, cast=bool) #True
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')]) #[]
 
-print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -82,6 +80,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+'''
 DATABASES = {
     'default': {
         'ENGINE': config('DB_ENGINE'), #'django.contrib.gis.db.backends.postgis',
@@ -91,6 +90,11 @@ DATABASES = {
         'HOST': config('DB_HOST'), #'localhost',
         'PORT': config('DB_PORT'), #'',
     }
+}
+'''
+import dj_database_url
+DATABASES ={
+    'default': dj_database_url.parse(config('DATABASE_URL'))
 }
 
 
