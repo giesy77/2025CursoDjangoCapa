@@ -9,63 +9,96 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
-        /* Estilos para el contenedor principal del control de capas */
-.custom-layers-control {
-    position: absolute; /* Permite posicionarlo sobre el mapa */
-    top: 10px; /* Distancia desde la parte superior */
-    right: 10px; /* Distancia desde el borde derecho */
-    width: 250px; /* Ancho del panel */
-    max-height: 80vh; /* Altura máxima, 80% de la altura de la vista */
-    overflow-y: auto; /* Agrega barra de desplazamiento si el contenido excede la altura */
-    background: #fff; /* Fondo blanco */
-    padding: 15px;
-    border-radius: 8px; /* Esquinas redondeadas */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para un efecto flotante */
-    z-index: 1000; /* Asegura que esté sobre el mapa */
-}
+        /* Estilos base del control de capas */
+        .custom-layers-control {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 250px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: width 0.3s ease, padding 0.3s ease; /* Añade una transición para animar el cambio de tamaño */
+        }
 
-/* Estilos para el título del panel */
-.custom-layers-control h4 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 1.1em;
-    color: #333;
-    border-bottom: 2px solid #ddd; /* Línea de separación debajo del título */
-    padding-bottom: 8px;
-}
+        /* Nuevo estilo para el estado colapsado */
+        .custom-layers-control.collapsed {
+            width: 10px; /* Ancho del panel colapsado */
+            height: 4px;
+            padding: 15px;
+            overflow: hidden; /* Oculta el contenido */
+        }
 
-/* Estilos para la lista de capas */
-.custom-layers-control ul {
-    list-style-type: none; /* Elimina los puntos de la lista */
-    margin: 0;
-    padding: 0;
-}
+        /* Estilos para el título del panel */
+        .custom-layers-control h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #333;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 8px;
+            transition: opacity 0.3s ease; /* Transición para ocultar/mostrar */
+        }
 
-/* Estilos para cada elemento de la lista (cada capa) */
-.custom-layers-control li {
-    padding: 8px 0;
-    border-bottom: 1px solid #eee; /* Línea separadora entre capas */
-    font-size: 0.95em;
-    color: #555;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
+        /* Estilos para la lista de capas */
+        .custom-layers-control ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            transition: opacity 0.3s ease; /* Transición para ocultar/mostrar */
+        }
 
-/* Efecto al pasar el mouse sobre un elemento de la lista */
-.custom-layers-control li:hover {
-    background-color: #f9f9f9;
-}
+        /* Estilos para cada elemento de la lista (cada capa) */
+        .custom-layers-control li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.95em;
+            color: #555;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
 
-/* Oculta la última línea separadora */
-.custom-layers-control li:last-child {
-    border-bottom: none;
-}
+        /* Efecto al pasar el mouse sobre un elemento de la lista */
+        .custom-layers-control li:hover {
+            background-color: #f9f9f9;
+        }
 
-/* Estilos para los checkboxes */
-.custom-layers-control input[type="checkbox"] {
-    margin-right: 8px;
-    cursor: pointer;
-}
+        /* Oculta la última línea separadora */
+        .custom-layers-control li:last-child {
+            border-bottom: none;
+        }
+
+        /* Estilos para los checkboxes */
+        .custom-layers-control input[type="checkbox"] {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        /* **NUEVOS ESTILOS PARA EL BOTÓN** */
+        #toggle-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            color: #555;
+            line-height: 1; /* Elimina espacio extra */
+            z-index: 1001; /* Asegura que esté por encima de todo */
+        }
+
+        /* Oculta el título y la lista cuando el panel está colapsado */
+        .custom-layers-control.collapsed h4,
+        .custom-layers-control.collapsed ul {
+            opacity: 0;
+            pointer-events: none; /* Deshabilita clics */
+        }
     </style>
 
 </head>
@@ -73,182 +106,170 @@
 <h1 class="map-header">Mapa Interactivo Alcaldias</h1>
 
 <div id="custom-layers-control" class="custom-layers-control">
-        <h4>Control de Capas</h4>
-        <ul id="layers-list"></ul>
-    </div>
+    <button id="toggle-btn" title="Ocultar panel">&lt;&lt;</button>
+    <h4>Control de Capas</h4>
+    <ul id="layers-list"></ul>
+</div>
 
 <div class="map-container">
     <div id="map"></div>
-
 </div>
 
 <script>
+    // Asegúrate de que este script se ejecute después de que se cargue el mapa
+    var map = L.map('map').setView([19.3600, -99.1300], 10);
 
+    // Tu array de datos de capas
+    var layersData = [
+        {
+            name: "OpenStreetMap",
+            url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            type: "tile",
+            layer: null,
+            isActive: true,
+            attribution: "http://www.openstreetmap.org/copyright"
+        },
+        {
+            name: "OpenStreetMap HOT",
+            url: "https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+            type: "tile",
+            layer: null,
+            isActive: false,
+            attribution: "© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France"
+        },
+        {
+            name: "ESRI World Imagery",
+            url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            type: "tile",
+            layer: null,
+            isActive: false,
+            attribution: "Tiles © Esri — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, swisstopo, and the GIS User Community"
+        },
+        {
+            name: "Alcaldias",
+            url: "{% static 'data/alcaldias.geojson' %}",
+            type: "geojson",
+            layer: null,
+            isActive: true,
+            style: { color: "#38F527", weight: 2, opacity: 1, fillOpacity: 0.5 }
+        }
+    ];
 
+    var estilo_resaltado = {
+        color: "#0000ff",
+        weight: 2,
+        opacity: 0.7,
+        fillcolor: "#00bfff",
+        fillOpacity: 0.4
+    };
 
+    var layersList = document.getElementById('layers-list');
 
-
-// Asegúrate de que este script se ejecute después de que se cargue el mapa
-
-// 1. Define tu mapa base
-var map = L.map('map').setView([19.3600, -99.1300], 10); // Coordenadas de ejemplo
-/*
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);*/
-
-// 2. Define la estructura de tus capas
-// La capa 'Alcaldias' se dejará como un placeholder por ahora
-var layersData = [
-    {
-        name: "OpenStreetMap",
-        url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        type: "tile",
-        layer: null,
-        isActive: true,
-        attribution: "http://www.openstreetmap.org/copyright"
-    },
-    {
-        name: "OpenStreetMap HOT",
-        url: "https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
-        type: "tile",
-        layer: null,
-        isActive: false,
-        attribution: "© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France"
-    },
-    {
-        name: "ESRI World Imagery",
-        url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        type: "tile",
-        layer: null,
-        isActive: false,
-        attribution: "Tiles © Esri — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, swisstopo, and the GIS User Community"
-    },
-    {
-        name: "Alcaldias",
-        url: "{% static 'data/alcaldias.geojson' %}",
-        type: "geojson",
-        layer: null,
-        isActive: true,
-        style: { color: "#38F527", weight: 2, opacity: 1, fillOpacity: 0.5 }
-    }
-];
-
-// Define tu estilo de resaltado para las alcaldías
-var estilo_resaltado = {
-    color: "#0000ff",
-    weight: 2,
-    opacity: 0.7,
-    fillcolor: "#00bfff",
-    fillOpacity: 0.4
-};
-
-// 3. Obtén el contenedor del control de capas
-var layersList = document.getElementById('layers-list');
-
-// Función para cargar los datos GeoJSON y las ortofotos
-function loadLayer(layerInfo) {
-    if (layerInfo.type === "geojson") {
-        return fetch(layerInfo.url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('No se pudo cargar la capa: ' + layerInfo.name);
-            }
-            return response.json();
-        })
-        .then(data => {
-            layerInfo.layer = L.geoJSON(data, {
-                style: layerInfo.style,
-                onEachFeature: function(feature, layer) {
-                    // Solo aplica los eventos de mouse a la capa de alcaldías
-                    if (layerInfo.name === "Alcaldias") {
-                        if (feature.properties && feature.properties.NOMGEO) {
-                            layer.bindPopup(feature.properties.NOMGEO);
+    function loadLayer(layerInfo) {
+        if (layerInfo.type === "geojson") {
+            return fetch(layerInfo.url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('No se pudo cargar la capa: ' + layerInfo.name);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    layerInfo.layer = L.geoJSON(data, {
+                        style: layerInfo.style,
+                        onEachFeature: function(feature, layer) {
+                            if (layerInfo.name === "Alcaldias") {
+                                if (feature.properties && feature.properties.NOMGEO) {
+                                    layer.bindPopup(feature.properties.NOMGEO);
+                                }
+                                layer.on('mouseover', function(e) {
+                                    layer.setStyle(estilo_resaltado);
+                                    layer.bringToFront();
+                                });
+                                layer.on('mouseout', function(e) {
+                                    layerInfo.layer.resetStyle(layer);
+                                });
+                            }
                         }
-                        layer.on('mouseover', function(e) {
-                            layer.setStyle(estilo_resaltado);
-                            layer.bringToFront();
-                        });
-                        layer.on('mouseout', function(e) {
-                            layerInfo.layer.resetStyle(layer);
-                        });
-                    }
-                }
-            });
+                    });
+                    console.log(layerInfo.name + ' cargada.');
+                    return layerInfo.layer;
+                });
+        } else if (layerInfo.type === "tile") {
+            layerInfo.layer = L.tileLayer(layerInfo.url, { attribution: layerInfo.attribution });
             console.log(layerInfo.name + ' cargada.');
-            return layerInfo.layer;
-        });
-    } else if (layerInfo.type === "tile") {
-        layerInfo.layer = L.tileLayer(layerInfo.url, { attribution: layerInfo.attribution });
-        console.log(layerInfo.name + ' cargada.');
-        return Promise.resolve(layerInfo.layer);
+            return Promise.resolve(layerInfo.layer);
+        }
+        return Promise.reject(new Error("Tipo de capa no soportado: " + layerInfo.type));
     }
-    // Puedes agregar más tipos de capas si lo necesitas
-    return Promise.reject(new Error("Tipo de capa no soportado: " + layerInfo.type));
-}
 
-// 4. Carga todas las capas de forma asíncrona
-var promises = layersData.map(loadLayer);
+    var promises = layersData.map(loadLayer);
 
-// 5. Espera a que todas las promesas se resuelvan y luego construye el control
-Promise.all(promises)
-    .then(layers => {
-        // Itera sobre los datos de las capas para crear el control
-        layersData.forEach(function(layerInfo, index) {
-            var listItem = document.createElement('li');
-            var checkbox = document.createElement('input');
-            checkbox.type = "checkbox";
-            checkbox.id = "layer-" + index;
-            checkbox.checked = layerInfo.isActive;
+    Promise.all(promises)
+        .then(layers => {
+            layersData.forEach(function(layerInfo, index) {
+                var listItem = document.createElement('li');
+                var checkbox = document.createElement('input');
+                checkbox.type = "checkbox";
+                checkbox.id = "layer-" + index;
+                checkbox.checked = layerInfo.isActive;
 
-            if (layerInfo.isActive) {
-                map.addLayer(layerInfo.layer);
-            }
-
-            // Añade un evento para manejar el cambio del checkbox
-            checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                    if (layerInfo.layer) {
-                        map.addLayer(layerInfo.layer);
-                        console.log(layerInfo.name + ' añadida al mapa.');
-                    }
-                } else {
-                    if (layerInfo.layer) {
-                        map.removeLayer(layerInfo.layer);
-                        console.log(layerInfo.name + ' eliminada del mapa.');
-                    }
+                if (layerInfo.isActive) {
+                    map.addLayer(layerInfo.layer);
                 }
+
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        if (layerInfo.layer) {
+                            map.addLayer(layerInfo.layer);
+                            console.log(layerInfo.name + ' añadida al mapa.');
+                        }
+                    } else {
+                        if (layerInfo.layer) {
+                            map.removeLayer(layerInfo.layer);
+                            console.log(layerInfo.name + ' eliminada del mapa.');
+                        }
+                    }
+                });
+
+                var label = document.createElement('label');
+                label.htmlFor = "layer-" + index;
+                label.textContent = layerInfo.name;
+
+                listItem.appendChild(checkbox);
+                listItem.appendChild(label);
+                layersList.appendChild(listItem);
             });
+        })
+        .catch(error => console.error('Error al cargar una o más capas:', error));
 
-            var label = document.createElement('label');
-            label.htmlFor = "layer-" + index;
-            label.textContent = layerInfo.name;
+    var customControl = L.Control.extend({
+        onAdd: function(map) {
+            var div = L.DomUtil.get('custom-layers-control');
+            L.DomEvent.disableClickPropagation(div);
+            return div;
+        },
+        onRemove: function(map) {}
+    });
 
-            listItem.appendChild(checkbox);
-            listItem.appendChild(label);
-            layersList.appendChild(listItem);
-        });
-    })
-    .catch(error => console.error('Error al cargar una o más capas:', error));
-
-// Opcional: crea un control para mover el div al mapa
-var customControl = L.Control.extend({
-    onAdd: function(map) {
-        var div = L.DomUtil.get('custom-layers-control');
-        L.DomEvent.disableClickPropagation(div);
-        return div;
-    },
-    onRemove: function(map) {
-        // No hacemos nada
-    }
-});
-
-// Añade el control personalizado al mapa
-new customControl({ position: 'topright' }).addTo(map);
-
-
+    new customControl({ position: 'topright' }).addTo(map);
     L.control.scale().addTo(map);
 
+    // **NUEVO SCRIPT PARA OCULTAR/MOSTRAR**
+    var toggleBtn = document.getElementById('toggle-btn');
+    var sidebar = document.getElementById('custom-layers-control');
 
+    toggleBtn.addEventListener('click', function() {
+        sidebar.classList.toggle('collapsed');
+        if (sidebar.classList.contains('collapsed')) {
+            toggleBtn.textContent = '>>';
+            toggleBtn.setAttribute('title', 'Mostrar panel');
+        } else {
+            toggleBtn.textContent = '<<';
+            toggleBtn.setAttribute('title', 'Ocultar panel');
+        }
+        // Fuerza a Leaflet a reajustar el mapa después de la animación
+        map.invalidateSize();
+    });
 </script>
 {% endblock %}
