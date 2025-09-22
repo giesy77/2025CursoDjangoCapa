@@ -28,7 +28,15 @@ SECRET_KEY = config('SECRET_KEY') #'django-insecure-d9@qo-7q*v_%i6z6m4c91*j!h*w&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool) #True
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')]) #[]
+#ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')]) #[]
+
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'two025cursodjangocapa.onrender.com'
+]
+
+CSRF_TRUSTED_ORIGINS = ['https://two025cursodjangocapa.onrender.com']
 
 # Application definition
 
