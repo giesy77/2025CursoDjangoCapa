@@ -116,10 +116,9 @@
 </div>
 
 <script>
-    // Asegúrate de que este script se ejecute después de que se cargue el mapa
+
     var map = L.map('map').setView([19.3600, -99.1300], 10);
 
-    // Tu array de datos de capas
     var layersData = [
         {
             name: "OpenStreetMap",
@@ -255,7 +254,6 @@
     new customControl({ position: 'topright' }).addTo(map);
     L.control.scale().addTo(map);
 
-    // **NUEVO SCRIPT PARA OCULTAR/MOSTRAR**
     var toggleBtn = document.getElementById('toggle-btn');
     var sidebar = document.getElementById('custom-layers-control');
 
@@ -268,7 +266,7 @@
             toggleBtn.textContent = '<<';
             toggleBtn.setAttribute('title', 'Ocultar panel');
         }
-        // Fuerza a Leaflet a reajustar el mapa después de la animación
+
         map.invalidateSize();
     });
 </script>

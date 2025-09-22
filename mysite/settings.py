@@ -19,14 +19,21 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+#Aqui definimos si estamos en produccion o desarrollo
+ENTORNO = config('ENTORNO', default='produccion')
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY') #'django-insecure-d9@qo-7q*v_%i6z6m4c91*j!h*w&9f^!hzm3j*j1r%66boquen'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool) #True
+if ENTORNO=='desarrollo':
+    DEBUG = True #config('DEBUG', default=False, cast=bool)
+else:
+    DEBUG = False
 
 #ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')]) #[]
 
@@ -88,22 +95,22 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-'''
-DATABASES = {
-    'default': {
-        'ENGINE': config('DB_ENGINE'), #'django.contrib.gis.db.backends.postgis',
-        'NAME': config('DB_NAME'), #'curso_django',
-        'USER': config('DB_USER'), #'djangousr',
-        'PASSWORD': config('DB_PASSWORD') ,#'djangoAdm',
-        'HOST': config('DB_HOST'), #'localhost',
-        'PORT': config('DB_PORT'), #'',
+if ENTORNO == 'desarrollo':
+    DATABASES = {
+        'default': {
+            'ENGINE': config('DB_ENGINE'), #'django.contrib.gis.db.backends.postgis',
+            'NAME': config('DB_NAME'), #'curso_django',
+            'USER': config('DB_USER'), #'djangousr',
+            'PASSWORD': config('DB_PASSWORD') ,#'djangoAdm',
+            'HOST': config('DB_HOST'), #'localhost',
+            'PORT': config('DB_PORT'), #'',
+        }
     }
-}
-'''
-import dj_database_url
-DATABASES ={
-    'default': dj_database_url.parse(config('DATABASE_URL'))
-}
+else:
+    import dj_database_url
+    DATABASES ={
+        'default': dj_database_url.parse(config('DATABASE_URL'))
+    }
 
 
 # Password validation
